@@ -37,6 +37,10 @@ npm run build
 npm start
 ```
 
+## Deploy on Laravel Forge
+
+See **[DEPLOY-FORGE.md](./DEPLOY-FORGE.md)** for Nginx template, daemon (`npm run start`), zero-downtime deploy script, and SSL/DNS steps.
+
 ## Structure
 
 | Path | Purpose |
