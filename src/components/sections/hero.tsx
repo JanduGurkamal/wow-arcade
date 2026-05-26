@@ -1,16 +1,18 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { ArrowRight, Sparkles, Upload } from "lucide-react";
+import { FloatingStickers } from "@/components/effects/floating-stickers";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
+import { SafeImage } from "@/components/ui/safe-image";
 import { floatingHeroProducts } from "@/lib/data";
+import { images } from "@/lib/images";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { cn } from "@/lib/utils";
 
@@ -45,39 +47,44 @@ export function HeroSection() {
   return (
     <section
       ref={ref}
-      className="relative min-h-[100dvh] overflow-hidden pt-24 pb-16 sm:pt-28"
+      className="relative isolate min-h-[100dvh] overflow-hidden pt-24 pb-16 sm:pt-28"
       aria-label="Hero"
     >
-      {/* Floating product cards */}
-      {floatingHeroProducts.map((p) => (
-        <motion.div
-          key={p.label}
-          className={cn(
-            "absolute z-10 hidden overflow-hidden rounded-3xl border-4 border-warm-white sticker-shadow sm:block",
-            p.className
-          )}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: p.delay + 0.5, type: "spring", stiffness: 120 }}
-          style={{ animationDelay: `${p.delay}s` }}
-        >
-          <div className="animate-float relative aspect-square h-full w-full">
-            <Image
-              src={p.image}
-              alt={p.label}
-              fill
-              sizes="150px"
-              className="object-cover"
-            />
-            <span className="absolute bottom-1 left-1 rounded-full bg-warm-white/90 px-2 py-0.5 text-[9px] font-bold text-ink">
-              {p.label}
-            </span>
-          </div>
-        </motion.div>
-      ))}
+      {/* Background layer — clipped to hero, stays behind all page content */}
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+        <FloatingStickers />
+        {floatingHeroProducts.map((p) => (
+          <motion.div
+            key={p.label}
+            className={cn(
+              "absolute relative hidden overflow-hidden rounded-3xl border-4 border-warm-white sticker-shadow sm:block",
+              p.className
+            )}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: p.delay + 0.5, type: "spring", stiffness: 120 }}
+          >
+            <div className="relative aspect-square h-full w-full min-h-[80px] min-w-[80px] animate-float">
+              <SafeImage
+                src={p.image}
+                alt={p.label}
+                fill
+                sizes="150px"
+                className="object-cover"
+              />
+              <span className="absolute bottom-1 left-1 rounded-full bg-warm-white/90 px-2 py-0.5 text-[9px] font-bold text-ink">
+                {p.label}
+              </span>
+            </div>
+          </motion.div>
+        ))}
+      </div>
 
-      <Container className="relative z-20">
-        <motion.div style={reduced ? undefined : { y }} className="mx-auto max-w-3xl text-center">
+      <Container className="relative z-10">
+        <motion.div
+          style={reduced ? undefined : { y }}
+          className="mx-auto max-w-3xl text-center"
+        >
           <motion.div
             initial={reduced ? false : { opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -140,14 +147,10 @@ export function HeroSection() {
             </Button>
           </motion.div>
 
-          {/* Mobile hero product stack */}
           <div className="relative mx-auto mt-12 max-w-sm sm:max-w-md lg:hidden">
-            <motion.div
-              className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border-4 border-warm-white sticker-shadow"
-              whileHover={reduced ? undefined : { scale: 1.02, rotate: 1 }}
-            >
-              <Image
-                src="https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=800&q=80&auto=format&fit=crop"
+            <motion.div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border-4 border-warm-white sticker-shadow">
+              <SafeImage
+                src={images.heroMobile}
                 alt="Custom stickers and magnets preview"
                 fill
                 priority
@@ -172,7 +175,6 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Desktop center mockup */}
           <motion.div
             className="relative mx-auto mt-14 hidden max-w-lg lg:block"
             initial={reduced ? false : { opacity: 0, y: 40 }}
@@ -180,9 +182,9 @@ export function HeroSection() {
             transition={{ delay: 0.9, type: "spring" }}
           >
             <div className="relative aspect-[5/4] overflow-hidden rounded-[2.5rem] border-[6px] border-warm-white sticker-shadow">
-              <Image
-                src="https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=1000&q=80&auto=format&fit=crop"
-                alt="Aesthetic desk with custom stickers and magnets"
+              <SafeImage
+                src={images.heroDesktop}
+                alt="Aesthetic desk with custom stickers"
                 fill
                 priority
                 sizes="512px"

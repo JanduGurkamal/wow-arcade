@@ -1,3 +1,5 @@
+import { images } from "./images";
+
 export type ProductCategory = {
   id: string;
   title: string;
@@ -41,8 +43,7 @@ export const categories: ProductCategory[] = [
     vibe: "playful",
     emoji: "✨",
     gradient: "from-pink-200/80 via-rose-100 to-cream",
-    image:
-      "https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=800&q=80&auto=format&fit=crop",
+    image: images.sticker,
     href: "#stickers",
   },
   {
@@ -52,8 +53,7 @@ export const categories: ProductCategory[] = [
     vibe: "aesthetic",
     emoji: "🧲",
     gradient: "from-amber-100/90 via-cream to-pink-100/60",
-    image:
-      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=800&q=80&auto=format&fit=crop",
+    image: images.magnet,
     href: "#magnets",
   },
   {
@@ -63,8 +63,7 @@ export const categories: ProductCategory[] = [
     vibe: "trendy",
     emoji: "🔑",
     gradient: "from-violet-100/70 via-cream to-peach-100",
-    image:
-      "https://images.unsplash.com/photo-1606107557195-0a7c8dc4bf1e?w=800&q=80&auto=format&fit=crop",
+    image: images.keychain,
     href: "#keychains",
   },
   {
@@ -74,8 +73,7 @@ export const categories: ProductCategory[] = [
     vibe: "emotional",
     emoji: "🖼️",
     gradient: "from-rose-100/80 via-warm-white to-beige",
-    image:
-      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80&auto=format&fit=crop",
+    image: images.frame,
     href: "#frames",
   },
   {
@@ -85,8 +83,7 @@ export const categories: ProductCategory[] = [
     vibe: "premium",
     emoji: "🎨",
     gradient: "from-orange-100/60 via-cream to-pink-50",
-    image:
-      "https://images.unsplash.com/photo-1618221197210-5fe3f9c2b0c0?w=800&q=80&auto=format&fit=crop",
+    image: images.canvas,
     href: "#canvas",
   },
 ];
@@ -99,8 +96,7 @@ export const trendingProducts: Product[] = [
     price: 12,
     tag: "Viral",
     color: "bg-pink-100",
-    image:
-      "https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=600&q=80&auto=format&fit=crop",
+    image: images.sticker,
   },
   {
     id: "2",
@@ -109,8 +105,7 @@ export const trendingProducts: Product[] = [
     price: 18,
     tag: "Bestseller",
     color: "bg-amber-50",
-    image:
-      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=600&q=80&auto=format&fit=crop",
+    image: images.magnet,
   },
   {
     id: "3",
@@ -119,8 +114,7 @@ export const trendingProducts: Product[] = [
     price: 24,
     tag: "Gift fave",
     color: "bg-violet-50",
-    image:
-      "https://images.unsplash.com/photo-1606107557195-0a7c8dc4bf1e?w=600&q=80&auto=format&fit=crop",
+    image: images.keychain,
   },
   {
     id: "4",
@@ -128,8 +122,7 @@ export const trendingProducts: Product[] = [
     category: "Frames",
     price: 32,
     color: "bg-rose-50",
-    image:
-      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80&auto=format&fit=crop",
+    image: images.frame,
   },
 ];
 
@@ -138,62 +131,47 @@ export const ugcPosts = [
     id: "1",
     user: "@maya.desk",
     caption: "my fridge is literally a scrapbook now 🥹",
-    image:
-      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=600&q=80&auto=format&fit=crop",
+    image: images.ugc1,
     likes: "12.4k",
   },
   {
     id: "2",
     user: "@couple.core",
     caption: "matching keychains >>>",
-    image:
-      "https://images.unsplash.com/photo-1606107557195-0a7c8dc4bf1e?w=600&q=80&auto=format&fit=crop",
+    image: images.ugc2,
     likes: "8.2k",
   },
   {
     id: "3",
     user: "@travel.journal",
     caption: "every trip gets a sticker now ✈️",
-    image:
-      "https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=600&q=80&auto=format&fit=crop",
+    image: images.ugc3,
     likes: "21k",
   },
   {
     id: "4",
     user: "@room.reset",
     caption: "canvas above my desk hits different",
-    image:
-      "https://images.unsplash.com/photo-1618221197210-5fe3f9c2b0c0?w=600&q=80&auto=format&fit=crop",
+    image: images.ugc4,
     likes: "5.6k",
   },
   {
     id: "5",
     user: "@gift.girl",
     caption: "best friend bday = custom magnets",
-    image:
-      "https://images.unsplash.com/photo-1513885535758-46798b2630a6?w=600&q=80&auto=format&fit=crop",
+    image: images.ugc5,
     likes: "9.1k",
   },
   {
     id: "6",
     user: "@study.aesthetic",
     caption: "sticker bombing my laptop lol",
-    image:
-      "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=600&q=80&auto=format&fit=crop",
+    image: images.ugc6,
     likes: "15k",
   },
 ];
 
-export const galleryImages = [
-  "https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1606107557195-0a7c8dc4bf1e?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1513885535758-46798b2630a6?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1618221197210-5fe3f9c2b0c0?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80&auto=format&fit=crop",
-];
+export const galleryImages = images.gallery;
 
 export const emotionalReasons = [
   {
@@ -225,29 +203,25 @@ export const emotionalReasons = [
 export const floatingHeroProducts = [
   {
     label: "Sticker",
-    image:
-      "https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=400&q=80&auto=format&fit=crop",
+    image: images.sticker,
     className: "top-[12%] left-[4%] w-24 sm:w-32 rotate-[-12deg]",
     delay: 0,
   },
   {
     label: "Magnet",
-    image:
-      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=400&q=80&auto=format&fit=crop",
+    image: images.magnet,
     className: "top-[8%] right-[6%] w-28 sm:w-36 rotate-[8deg]",
     delay: 0.2,
   },
   {
     label: "Keychain",
-    image:
-      "https://images.unsplash.com/photo-1606107557195-0a7c8dc4bf1e?w=400&q=80&auto=format&fit=crop",
+    image: images.keychain,
     className: "bottom-[28%] left-[2%] w-20 sm:w-28 rotate-[6deg]",
     delay: 0.4,
   },
   {
     label: "Frame",
-    image:
-      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400&q=80&auto=format&fit=crop",
+    image: images.frame,
     className: "bottom-[22%] right-[4%] w-24 sm:w-32 rotate-[-6deg]",
     delay: 0.15,
   },

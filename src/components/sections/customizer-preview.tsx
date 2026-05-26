@@ -1,45 +1,76 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { ImagePlus, Sparkles, Wand2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { ImagePlus, Sparkles, Wand2, X } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
 import { MagneticButton } from "@/components/ui/magnetic-button";
+import { ProductMockup } from "@/components/customizer/product-mockup";
 import { customizerProducts } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
-const mockupImages: Record<string, string> = {
-  sticker:
-    "https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=800&q=80&auto=format&fit=crop",
-  magnet:
-    "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=800&q=80&auto=format&fit=crop",
-  keychain:
-    "https://images.unsplash.com/photo-1606107557195-0a7c8dc4bf1e?w=800&q=80&auto=format&fit=crop",
-  frame:
-    "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80&auto=format&fit=crop",
-  canvas:
-    "https://images.unsplash.com/photo-1618221197210-5fe3f9c2b0c0?w=800&q=80&auto=format&fit=crop",
-};
+const ACCEPT = "image/jpeg,image/png,image/webp,image/heic,image/heif";
 
 export function CustomizerPreviewSection() {
   const [active, setActive] =
     useState<(typeof customizerProducts)[number]["id"]>("sticker");
   const [dragging, setDragging] = useState(false);
-  const [uploaded, setUploaded] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const onDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setDragging(false);
-    setUploaded(true);
+  const applyFile = useCallback((file: File | null) => {
+    setError(null);
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError("Please upload an image (JPG, PNG, or WebP).");
+      return;
+    }
+
+    if (file.size > 12 * 1024 * 1024) {
+      setError("Image must be under 12MB.");
+      return;
+    }
+
+    setPreviewUrl((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return URL.createObjectURL(file);
+    });
+    setFileName(file.name);
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+
+  const clearPhoto = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(null);
+    setFileName(null);
+    setError(null);
+    if (inputRef.current) inputRef.current.value = "";
+  };
+
+  const onDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setDragging(false);
+      const file = e.dataTransfer.files?.[0];
+      if (file) applyFile(file);
+    },
+    [applyFile]
+  );
 
   return (
     <section
       id="customize"
-      className="scroll-mt-20 py-16 sm:py-24"
+      className="relative z-10 scroll-mt-20 py-16 sm:py-24"
       aria-labelledby="customize-heading"
     >
       <Container>
@@ -83,8 +114,14 @@ export function CustomizerPreviewSection() {
         </Reveal>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:gap-10">
-          {/* Upload zone */}
           <Reveal delay={0.15}>
+            <input
+              ref={inputRef}
+              type="file"
+              accept={ACCEPT}
+              className="sr-only"
+              onChange={(e) => applyFile(e.target.files?.[0] ?? null)}
+            />
             <div
               onDragOver={(e) => {
                 e.preventDefault();
@@ -93,45 +130,78 @@ export function CustomizerPreviewSection() {
               onDragLeave={() => setDragging(false)}
               onDrop={onDrop}
               className={cn(
-                "relative flex min-h-[280px] flex-col items-center justify-center rounded-[2rem] border-2 border-dashed p-8 transition-all duration-300 sm:min-h-[360px]",
+                "relative flex min-h-[280px] flex-col items-center justify-center overflow-hidden rounded-[2rem] border-2 border-dashed p-6 transition-all duration-300 sm:min-h-[360px] sm:p-8",
                 dragging
-                  ? "border-pink-deep bg-pink/25 scale-[1.02]"
-                  : "border-pink/50 bg-gradient-to-br from-pink/20 via-cream to-lavender/30"
+                  ? "border-pink-deep bg-pink/25 scale-[1.01]"
+                  : "border-pink/50 bg-gradient-to-br from-pink/20 via-cream to-lavender/30",
+                previewUrl && "border-solid border-pink-deep/40"
               )}
             >
-              <motion.div
-                animate={dragging ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
-                className="rounded-full bg-warm-white p-5 shadow-lg"
-              >
-                <ImagePlus className="h-10 w-10 text-pink-deep" strokeWidth={1.5} />
-              </motion.div>
-              <p className="mt-4 text-center font-semibold text-ink">
-                Drop your memory here
-              </p>
-              <p className="mt-1 text-center text-sm text-muted">
-                or tap to upload — JPG, PNG, HEIC
-              </p>
-              <Button
-                variant="outline"
-                className="mt-6"
-                onClick={() => setUploaded(true)}
-              >
-                Choose photo
-              </Button>
-              {uploaded && (
-                <motion.p
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 flex items-center gap-1 text-sm font-semibold text-pink-deep"
-                >
-                  <Sparkles className="h-4 w-4" />
-                  Photo loaded — check preview →
-                </motion.p>
+              {previewUrl ? (
+                <>
+                  <div className="relative mb-4 h-40 w-40 overflow-hidden rounded-3xl border-4 border-warm-white shadow-lg sm:h-48 sm:w-48">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={previewUrl}
+                      alt="Your upload preview"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <p className="max-w-[220px] truncate text-center text-sm font-semibold text-ink">
+                    {fileName}
+                  </p>
+                  <p className="mt-1 flex items-center gap-1 text-sm font-semibold text-pink-deep">
+                    <Sparkles className="h-4 w-4" />
+                    Ready — see mockup →
+                  </p>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="mt-4 gap-1"
+                    onClick={clearPhoto}
+                  >
+                    <X className="h-4 w-4" />
+                    Remove photo
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <motion.div
+                    animate={
+                      dragging ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }
+                    }
+                    className="rounded-full bg-warm-white p-5 shadow-lg"
+                  >
+                    <ImagePlus
+                      className="h-10 w-10 text-pink-deep"
+                      strokeWidth={1.5}
+                    />
+                  </motion.div>
+                  <p className="mt-4 text-center font-semibold text-ink">
+                    Drop your memory here
+                  </p>
+                  <p className="mt-1 text-center text-sm text-muted">
+                    or tap to upload — JPG, PNG, WebP
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="mt-6"
+                    onClick={() => inputRef.current?.click()}
+                  >
+                    Choose photo
+                  </Button>
+                </>
+              )}
+              {error && (
+                <p className="mt-3 text-center text-sm font-medium text-pink-deep">
+                  {error}
+                </p>
               )}
             </div>
           </Reveal>
 
-          {/* Live mockup */}
           <Reveal delay={0.2}>
             <div className="glass-panel relative overflow-hidden rounded-[2rem] p-4 sticker-shadow sm:p-6">
               <div className="mb-3 flex items-center justify-between">
@@ -140,64 +210,34 @@ export function CustomizerPreviewSection() {
                 </span>
                 <span className="flex items-center gap-1 rounded-full bg-pink/30 px-2 py-1 text-[10px] font-bold text-ink">
                   <Wand2 className="h-3 w-3" />
-                  AI crop ready
+                  {previewUrl ? "Your photo" : "Demo preview"}
                 </span>
               </div>
-              <div className="relative aspect-square overflow-hidden rounded-3xl bg-beige/50">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={active}
-                    initial={{ opacity: 0, scale: 0.95, rotate: -2 }}
-                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                    exit={{ opacity: 0, scale: 1.02, rotate: 2 }}
-                    transition={{ type: "spring", stiffness: 260, damping: 22 }}
-                    className="absolute inset-0"
-                  >
-                    <Image
-                      src={mockupImages[active]}
-                      alt={`${active} preview`}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-cover"
-                    />
-                    {uploaded && (
-                      <div className="absolute inset-4 rounded-2xl border-4 border-warm-white shadow-lg overflow-hidden">
-                        <Image
-                          src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&q=80&auto=format&fit=crop"
-                          alt="Your uploaded photo"
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-                {/* Product frame overlays */}
-                {active === "sticker" && (
-                  <div className="absolute inset-0 pointer-events-none flex flex-wrap gap-2 p-6 content-start">
-                    {[0, 1, 2, 3].map((i) => (
-                      <motion.div
-                        key={i}
-                        className="h-16 w-16 rounded-2xl border-4 border-warm-white bg-pink/40 shadow-md"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: i * 0.1, type: "spring" }}
-                      />
-                    ))}
-                  </div>
-                )}
-                {active === "keychain" && (
-                  <div className="absolute top-4 left-1/2 -translate-x-1/2 h-8 w-3 rounded-full bg-sand shadow-inner" />
-                )}
-                {active === "frame" && (
-                  <div className="absolute inset-6 rounded-lg border-[12px] border-warm-white shadow-inner pointer-events-none" />
-                )}
-              </div>
+
+              <motion.div
+                key={`${active}-${previewUrl ?? "demo"}`}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 260, damping: 24 }}
+              >
+                <ProductMockup type={active} photoUrl={previewUrl} />
+              </motion.div>
+
               <p className="mt-4 text-center text-sm text-brown-soft">
-                Made uniquely for you · Ships in 3–5 days
+                {previewUrl
+                  ? "This is how your upload looks on this product."
+                  : "Upload a photo to see your design here."}
               </p>
-              <MagneticButton variant="pink" className="mt-4 w-full" size="lg">
-                Customize this product
+              <MagneticButton
+                variant="pink"
+                className="mt-4 w-full"
+                size="lg"
+                type="button"
+                onClick={() => {
+                  if (!previewUrl) inputRef.current?.click();
+                }}
+              >
+                {previewUrl ? "Add to cart" : "Upload to customize"}
               </MagneticButton>
             </div>
           </Reveal>

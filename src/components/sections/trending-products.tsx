@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import { motion } from "framer-motion";
 import { Heart, Plus } from "lucide-react";
 import { Container } from "@/components/ui/container";
@@ -48,7 +48,7 @@ export function TrendingProductsSection() {
                     whileHover={reduced ? undefined : { scale: 1.06 }}
                     transition={{ type: "spring", stiffness: 200 }}
                   >
-                    <Image
+                    <SafeImage
                       src={product.image}
                       alt={product.name}
                       fill

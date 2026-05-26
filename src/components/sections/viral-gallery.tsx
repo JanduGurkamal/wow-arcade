@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
@@ -68,7 +68,7 @@ export function ViralGallerySection() {
                 whileHover={reduced ? undefined : { scale: 1.08 }}
                 transition={{ type: "spring", stiffness: 200 }}
               >
-                <Image
+                <SafeImage
                   src={src}
                   alt={`Gallery ${i + 1}`}
                   fill
@@ -99,7 +99,7 @@ export function ViralGallerySection() {
                   i % 3 === 0 ? "aspect-[3/4]" : "aspect-square"
                 )}
               >
-                <Image
+                <SafeImage
                   src={src}
                   alt=""
                   fill

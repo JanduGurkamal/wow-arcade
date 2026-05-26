@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import { AppProviders } from "@/components/providers/app-providers";
-import { FloatingStickers } from "@/components/effects/floating-stickers";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -44,10 +43,7 @@ export default function RootLayout({
       <body
         className={`${plusJakarta.variable} ${fraunces.variable} mesh-bg min-h-screen font-sans text-ink antialiased`}
       >
-        <AppProviders>
-          <FloatingStickers />
-          {children}
-        </AppProviders>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );

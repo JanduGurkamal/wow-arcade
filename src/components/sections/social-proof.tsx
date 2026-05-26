@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import { motion } from "framer-motion";
 import { Heart, Play } from "lucide-react";
 import { Container } from "@/components/ui/container";
@@ -42,7 +42,7 @@ export function SocialProofSection() {
               transition={{ delay: i * 0.08, type: "spring" }}
             >
               <div className="relative aspect-[9/16] overflow-hidden rounded-[1.75rem] border-4 border-warm-white sticker-shadow">
-                <Image
+                <SafeImage
                   src={post.image}
                   alt={post.caption}
                   fill
@@ -83,7 +83,7 @@ export function SocialProofSection() {
                 key={`wall-${post.id}`}
                 className="sticker-peel relative aspect-square overflow-hidden rounded-2xl border-2 border-warm-white shadow-md"
               >
-                <Image
+                <SafeImage
                   src={post.image}
                   alt=""
                   fill

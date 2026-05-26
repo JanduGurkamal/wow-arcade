@@ -20,7 +20,7 @@ export default function Home() {
         Skip to content
       </a>
       <SiteHeader />
-      <main id="main-content">
+      <main id="main-content" className="relative z-10">
         <HeroSection />
         <CustomizerPreviewSection />
         <ProductCategoriesSection />

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/safe-image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
@@ -102,7 +102,7 @@ function CategoryCard({
         whileHover={reduced ? undefined : { scale: 1.05 }}
         transition={{ type: "spring", stiffness: 200 }}
       >
-        <Image
+        <SafeImage
           src={cat.image}
           alt={cat.title}
           fill
