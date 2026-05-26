@@ -1,12 +1,12 @@
 /** Brand tokens aligned with WOW Arcade logo — warm ivory, mocha, botanical sage */
 export const brand = {
   colors: {
-    ivory: "#FAF7F2",
-    cream: "#F5EFE6",
+    ivory: "#FDF8F1",
+    cream: "#F7F0E8",
     beige: "#EBE2D6",
     sand: "#DDD3C6",
-    mocha: "#5C4A42",
-    coffee: "#8B7355",
+    mocha: "#5D4037",
+    coffee: "#6D5348",
     taupe: "#A89B8C",
     sage: "#8A9B7A",
     sageLight: "#B5C4A8",

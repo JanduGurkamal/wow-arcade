@@ -32,7 +32,7 @@ export function SiteFooter() {
 
         <div className="mt-14 grid gap-10 sm:grid-cols-3">
           <div>
-            <BrandLogo />
+            <BrandLogo size="footer" />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-taupe">
               Tiny moments, preserved beautifully. Handcrafted personalized
               gifts for the people and places you hold close.

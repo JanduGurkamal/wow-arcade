@@ -5,26 +5,36 @@ import { cn } from "@/lib/utils";
 export function BrandLogo({
   className,
   showTagline = false,
+  size = "header",
 }: {
   className?: string;
   showTagline?: boolean;
+  size?: "header" | "footer";
 }) {
+  const dim =
+    size === "footer"
+      ? "h-16 w-16 sm:h-20 sm:w-20"
+      : "h-12 w-12 sm:h-14 sm:w-14";
+
   return (
     <Link
       href="/"
-      className={cn("group inline-flex flex-col items-start gap-0.5", className)}
+      className={cn("group inline-flex items-center gap-3", className)}
       aria-label="WOW Arcade home"
     >
       <Image
-        src="/wow-arcade-logo.svg"
+        src="/wow-arcade-logo.png"
         alt="WOW Arcade"
-        width={160}
-        height={56}
-        priority
-        className="h-10 w-auto sm:h-12 transition-opacity group-hover:opacity-85"
+        width={200}
+        height={200}
+        priority={size === "header"}
+        className={cn(
+          dim,
+          "object-contain transition-opacity group-hover:opacity-90"
+        )}
       />
       {showTagline && (
-        <span className="font-hand text-lg text-coffee -mt-1 ml-1 opacity-80">
+        <span className="hidden font-hand text-xl text-coffee opacity-90 sm:inline">
           handcrafted keepsakes
         </span>
       )}
