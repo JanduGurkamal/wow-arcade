@@ -1,214 +1,127 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import gsap from "gsap";
-import { ArrowRight, Sparkles, Upload } from "lucide-react";
-import { FloatingStickers } from "@/components/effects/floating-stickers";
-import { MagneticButton } from "@/components/ui/magnetic-button";
+import { ArrowRight } from "lucide-react";
+import { BotanicalAccent } from "@/components/decor/botanical-accent";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
 import { SafeImage } from "@/components/ui/safe-image";
+import { brand } from "@/lib/brand";
 import { floatingHeroProducts } from "@/lib/data";
 import { images } from "@/lib/images";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
-import { cn } from "@/lib/utils";
 
 export function HeroSection() {
   const reduced = usePrefersReducedMotion();
   const ref = useRef<HTMLElement>(null);
-  const headlineRef = useRef<HTMLHeadingElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 80]);
-
-  useEffect(() => {
-    if (reduced || !headlineRef.current) return;
-    const words = headlineRef.current.querySelectorAll("[data-word]");
-    gsap.fromTo(
-      words,
-      { y: 50, opacity: 0, rotateZ: -3 },
-      {
-        y: 0,
-        opacity: 1,
-        rotateZ: 0,
-        stagger: 0.08,
-        duration: 0.9,
-        ease: "back.out(1.4)",
-        delay: 0.15,
-      }
-    );
-  }, [reduced]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 40]);
 
   return (
     <section
       ref={ref}
-      className="relative isolate min-h-[100dvh] overflow-hidden pt-24 pb-16 sm:pt-28"
+      className="relative isolate overflow-hidden pt-28 pb-20 sm:pt-32 sm:pb-28"
       aria-label="Hero"
     >
-      {/* Background layer — clipped to hero, stays behind all page content */}
-      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
-        <FloatingStickers />
-        {floatingHeroProducts.map((p) => (
-          <motion.div
-            key={p.label}
-            className={cn(
-              "absolute relative hidden overflow-hidden rounded-3xl border-4 border-warm-white sticker-shadow sm:block",
-              p.className
-            )}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: p.delay + 0.5, type: "spring", stiffness: 120 }}
-          >
-            <div className="relative aspect-square h-full w-full min-h-[80px] min-w-[80px] animate-float">
-              <SafeImage
-                src={p.image}
-                alt={p.label}
-                fill
-                sizes="150px"
-                className="object-cover"
-              />
-              <span className="absolute bottom-1 left-1 rounded-full bg-warm-white/90 px-2 py-0.5 text-[9px] font-bold text-ink">
-                {p.label}
+      <BotanicalAccent className="pointer-events-none absolute left-0 top-32 w-28 text-sage opacity-60 md:w-36" />
+      <BotanicalAccent className="pointer-events-none absolute right-4 top-48 w-24 rotate-12 scale-x-[-1] text-sage opacity-50 md:right-12" />
+
+      <Container>
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <motion.div style={reduced ? undefined : { opacity, y }}>
+            <Badge>Handcrafted in small batches</Badge>
+            <h1 className="mt-6 font-display text-[clamp(2.25rem,6vw,3.75rem)] font-medium leading-[1.12] tracking-tight text-mocha">
+              {brand.copy.heroLines[0]}
+              <span className="mt-1 block italic text-coffee">
+                {brand.copy.heroLines[1]}
               </span>
+            </h1>
+            <p className="mt-6 max-w-md text-base leading-relaxed text-taupe">
+              {brand.copy.heroSub}
+            </p>
+            <p className="mt-3 font-hand text-xl text-coffee/90">
+              Tiny moments, preserved beautifully.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Button variant="sage" size="lg" asChild>
+                <Link href="#customize">
+                  Upload your memory
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <Link href="#shop">Explore the collection</Link>
+              </Button>
             </div>
           </motion.div>
-        ))}
-      </div>
 
-      <Container className="relative z-10">
-        <motion.div
-          style={reduced ? undefined : { y }}
-          className="mx-auto max-w-3xl text-center"
-        >
+          {/* Memory board — polaroid stack */}
           <motion.div
-            initial={reduced ? false : { opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 200 }}
-          >
-            <Badge className="border-pink/50 bg-pink/30 text-ink">
-              <Sparkles className="mr-1 inline h-3 w-3" />
-              Upload → Customize → Obsess
-            </Badge>
-          </motion.div>
-
-          <h1
-            ref={headlineRef}
-            className="mt-6 font-display text-[clamp(2.5rem,9vw,4.5rem)] font-semibold leading-[1.05] tracking-tight text-ink"
-          >
-            <span data-word className="inline-block">
-              Turn your
-            </span>{" "}
-            <span data-word className="inline-block text-pink-deep">
-              memories
-            </span>
-            <br />
-            <span data-word className="inline-block">
-              into
-            </span>{" "}
-            <span
-              data-word
-              className="inline-block bg-gradient-to-r from-pink-deep via-peach to-lavender bg-clip-text text-transparent"
-            >
-              everyday art
-            </span>
-          </h1>
-
-          <motion.p
-            className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-brown-soft sm:text-lg"
+            className="relative mx-auto aspect-[4/5] w-full max-w-md lg:max-w-none"
             initial={reduced ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            Custom stickers, magnets, keychains, frames &amp; more — made from
-            <span className="font-semibold text-ink"> your photos</span>.
-            Tiny memories that stay forever.
-          </motion.p>
-
-          <motion.div
-            className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
-            initial={reduced ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.75 }}
-          >
-            <MagneticButton variant="pink" size="lg" asChild>
-              <Link href="#customize">
-                <Upload className="h-5 w-5" />
-                Upload your photos
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </MagneticButton>
-            <Button variant="outline" size="lg" asChild>
-              <Link href="#shop">Shop trending</Link>
-            </Button>
-          </motion.div>
-
-          <div className="relative mx-auto mt-12 max-w-sm sm:max-w-md lg:hidden">
-            <motion.div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border-4 border-warm-white sticker-shadow">
-              <SafeImage
-                src={images.heroMobile}
-                alt="Custom stickers and magnets preview"
-                fill
-                priority
-                sizes="90vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-x-4 bottom-4 glass-panel rounded-2xl p-3 text-left">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-pink-deep">
-                  Live preview
+            <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-cream via-beige/50 to-blush/30" />
+            {floatingHeroProducts.map((p, i) => (
+              <motion.div
+                key={p.label}
+                className="polaroid absolute w-[42%] sm:w-[38%]"
+                style={{
+                  top: i % 2 === 0 ? "8%" : "38%",
+                  left: i < 2 ? (i === 0 ? "4%" : "52%") : i === 2 ? "8%" : "48%",
+                  rotate: i === 0 ? -6 : i === 1 ? 5 : i === 2 ? 3 : -4,
+                  zIndex: i + 1,
+                }}
+                animate={
+                  reduced
+                    ? undefined
+                    : { y: [0, i % 2 === 0 ? -5 : 5, 0] }
+                }
+                transition={{
+                  duration: 5 + i,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                <div className="relative aspect-[4/5] overflow-hidden bg-beige">
+                  <SafeImage
+                    src={p.image}
+                    alt={p.label}
+                    fill
+                    sizes="200px"
+                    className="object-cover"
+                  />
+                </div>
+                <p className="mt-2 text-center font-hand text-lg text-coffee">
+                  {p.label}
                 </p>
-                <p className="text-sm font-semibold text-ink">
-                  Your photo → custom sticker pack
-                </p>
+              </motion.div>
+            ))}
+            <div className="polaroid absolute bottom-6 left-1/2 w-[55%] -translate-x-1/2 rotate-1 z-10">
+              <div className="relative aspect-[5/4] overflow-hidden bg-beige">
+                <SafeImage
+                  src={images.heroDesktop}
+                  alt="Handcrafted keepsakes on a memory board"
+                  fill
+                  sizes="280px"
+                  priority
+                  className="object-cover"
+                />
               </div>
-            </motion.div>
-            <motion.div
-              className="absolute -right-2 top-8 rounded-2xl border-4 border-warm-white bg-pink/40 px-3 py-2 text-sm font-bold shadow-lg rotate-6"
-              animate={{ y: [0, -8, 0] }}
-              transition={{ repeat: Infinity, duration: 2.5 }}
-            >
-              ✨ so cute
-            </motion.div>
-          </div>
-
-          <motion.div
-            className="relative mx-auto mt-14 hidden max-w-lg lg:block"
-            initial={reduced ? false : { opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, type: "spring" }}
-          >
-            <div className="relative aspect-[5/4] overflow-hidden rounded-[2.5rem] border-[6px] border-warm-white sticker-shadow">
-              <SafeImage
-                src={images.heroDesktop}
-                alt="Aesthetic desk with custom stickers"
-                fill
-                priority
-                sizes="512px"
-                className="object-cover"
-              />
+              <p className="mt-2 text-center text-xs text-taupe">
+                Made to stay · just for you
+              </p>
             </div>
-            <motion.div
-              className="absolute -left-8 top-1/4 rounded-3xl border-4 border-warm-white bg-lavender/80 p-3 sticker-shadow -rotate-6"
-              animate={{ y: [0, -10, 0] }}
-              transition={{ repeat: Infinity, duration: 3 }}
-            >
-              <span className="text-2xl">🧲</span>
-              <p className="text-xs font-bold text-ink">Magnet</p>
-            </motion.div>
-            <motion.div
-              className="absolute -right-6 bottom-1/4 rounded-3xl border-4 border-warm-white bg-peach/80 p-3 sticker-shadow rotate-6"
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 3.5, delay: 0.5 }}
-            >
-              <span className="text-2xl">🔑</span>
-              <p className="text-xs font-bold text-ink">Keychain</p>
-            </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
       </Container>
     </section>
   );

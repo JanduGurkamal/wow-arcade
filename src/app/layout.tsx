@@ -1,36 +1,43 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
+import { Caveat, Cormorant_Garamond, Nunito_Sans } from "next/font/google";
 import { AppProviders } from "@/components/providers/app-providers";
 import "./globals.css";
 
-const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
+const nunito = Nunito_Sans({
+  variable: "--font-nunito",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "WOW Arcade — Custom Stickers, Magnets & Keepsakes",
+  title: "WOW Arcade — Handcrafted Personalized Keepsakes",
   description:
-    "Upload your memories. Turn them into custom stickers, acrylic magnets, keychains, frames & more. Gen-Z friendly, made uniquely for you.",
+    "Preserve your memories as custom stickers, magnets, keychains, and frames. A warm, artisan boutique for sentimental gifting.",
   openGraph: {
-    title: "WOW Arcade — Turn Your Memories Into Art",
-    description: "Custom stickers, magnets, keychains & aesthetic keepsakes.",
+    title: "WOW Arcade — Handcrafted Memories",
+    description: "Turn special moments into keepsakes made to stay.",
     type: "website",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fff9f5",
+  themeColor: "#FAF7F2",
 };
 
 export default function RootLayout({
@@ -41,7 +48,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${plusJakarta.variable} ${fraunces.variable} mesh-bg min-h-screen font-sans text-ink antialiased`}
+        className={`${nunito.variable} ${cormorant.variable} ${caveat.variable} paper-grain min-h-screen bg-ivory font-sans text-mocha antialiased`}
       >
         <AppProviders>{children}</AppProviders>
       </body>

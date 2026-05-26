@@ -1,70 +1,78 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand/logo";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 
-const links = {
-  Shop: ["Stickers", "Magnets", "Keychains", "Frames", "Canvas"],
-  Help: ["Shipping", "Returns", "FAQ", "Contact"],
-};
-
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-warm-white/80 pb-32 pt-12 lg:pb-12">
+    <footer className="border-t border-border bg-cream/50 pb-28 pt-14 lg:pb-14">
       <Container>
-        <div className="rounded-[2rem] bg-gradient-to-r from-pink/40 via-cream to-lavender/50 p-8 text-center sm:p-10">
-          <p className="text-2xl">💌</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold text-ink">
-            Get cute drops in your inbox
+        <div className="botanical-divider mb-12" />
+        <div className="paper-card rounded-3xl p-8 text-center sm:p-10">
+          <p className="font-hand text-2xl text-coffee">stay in the loop</p>
+          <h2 className="mt-2 font-display text-2xl font-medium text-mocha sm:text-3xl">
+            Letters from our studio
           </h2>
-          <p className="mt-2 text-sm text-brown-soft">
-            New templates, viral packs &amp; gift ideas — no spam, just vibes.
+          <p className="mx-auto mt-3 max-w-md text-sm text-taupe">
+            New designs, gifting ideas, and quiet inspiration — like a note from
+            a friend.
           </p>
           <form className="mx-auto mt-6 flex max-w-sm flex-col gap-2 sm:flex-row">
             <input
               type="email"
-              placeholder="you@email.com"
+              placeholder="your@email.com"
               aria-label="Email"
-              className="h-12 flex-1 rounded-2xl border-2 border-border bg-warm-white px-4 text-sm outline-none focus:border-pink-deep"
+              className="h-11 flex-1 rounded-full border border-border bg-ivory px-4 text-sm outline-none focus:border-sage/50"
             />
-            <Button type="submit" variant="pink">
-              Join
+            <Button type="submit" variant="sage">
+              Subscribe
             </Button>
           </form>
         </div>
 
-        <div className="mt-12 grid gap-8 sm:grid-cols-3">
+        <div className="mt-14 grid gap-10 sm:grid-cols-3">
           <div>
-            <p className="font-display text-xl font-semibold text-ink">
-              WOW Arcade ✨
-            </p>
-            <p className="mt-2 text-sm text-brown-soft">
-              Your memories, turned into aesthetic physical keepsakes.
+            <BrandLogo />
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-taupe">
+              Tiny moments, preserved beautifully. Handcrafted personalized
+              gifts for the people and places you hold close.
             </p>
           </div>
-          {Object.entries(links).map(([title, items]) => (
-            <div key={title}>
-              <p className="text-xs font-bold uppercase tracking-wider text-muted">
-                {title}
-              </p>
-              <ul className="mt-3 space-y-2">
-                {items.map((item) => (
-                  <li key={item}>
-                    <Link
-                      href="#shop"
-                      className="text-sm text-brown-soft hover:text-pink-deep"
-                    >
-                      {item}
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-coffee">
+              Shop
+            </p>
+            <ul className="mt-3 space-y-2 text-sm text-taupe">
+              {["Stickers", "Magnets", "Keychains", "Frames", "Canvas"].map(
+                (l) => (
+                  <li key={l}>
+                    <Link href="#shop" className="hover:text-mocha">
+                      {l}
                     </Link>
                   </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+                )
+              )}
+            </ul>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-coffee">
+              Studio
+            </p>
+            <ul className="mt-3 space-y-2 text-sm text-taupe">
+              {["Our story", "Shipping", "Care guide", "Contact"].map((l) => (
+                <li key={l}>
+                  <Link href="#" className="hover:text-mocha">
+                    {l}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        <p className="mt-10 text-center text-xs text-muted">
-          © {new Date().getFullYear()} WOW Arcade · Made with love for your
-          camera roll
+        <p className="mt-12 text-center text-xs text-taupe">
+          © {new Date().getFullYear()} WOW Arcade · Made with care for your
+          memories
         </p>
       </Container>
     </footer>
