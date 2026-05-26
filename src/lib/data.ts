@@ -1,3 +1,14 @@
+export type ProductCategory = {
+  id: string;
+  title: string;
+  tagline: string;
+  vibe: string;
+  emoji: string;
+  gradient: string;
+  image: string;
+  href: string;
+};
+
 export type Product = {
   id: string;
   name: string;
@@ -5,140 +16,241 @@ export type Product = {
   price: number;
   image: string;
   tag?: string;
-  description: string;
+  color?: string;
 };
 
-export const collections = [
+export type CustomizerProduct = {
+  id: "sticker" | "magnet" | "keychain" | "frame" | "canvas";
+  label: string;
+  emoji: string;
+};
+
+export const customizerProducts: CustomizerProduct[] = [
+  { id: "sticker", label: "Stickers", emoji: "✨" },
+  { id: "magnet", label: "Magnets", emoji: "🧲" },
+  { id: "keychain", label: "Keychains", emoji: "🔑" },
+  { id: "frame", label: "Frames", emoji: "🖼️" },
+  { id: "canvas", label: "Canvas", emoji: "🎨" },
+];
+
+export const categories: ProductCategory[] = [
+  {
+    id: "stickers",
+    title: "Custom Stickers",
+    tagline: "Peel, stick, slay",
+    vibe: "playful",
+    emoji: "✨",
+    gradient: "from-pink-200/80 via-rose-100 to-cream",
+    image:
+      "https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=800&q=80&auto=format&fit=crop",
+    href: "#stickers",
+  },
   {
     id: "magnets",
-    title: "Acrylic Magnets",
-    subtitle: "Memories that hold",
-    description:
-      "Crystal-clear acrylic frames your favorite moments—designed for refrigerators that feel like galleries.",
+    title: "Fridge Magnets",
+    tagline: "Your fridge, your gallery",
+    vibe: "aesthetic",
+    emoji: "🧲",
+    gradient: "from-amber-100/90 via-cream to-pink-100/60",
     image:
-      "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=1200&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=800&q=80&auto=format&fit=crop",
     href: "#magnets",
   },
   {
-    id: "framed",
-    title: "Framed Artwork",
-    subtitle: "Gallery at home",
-    description:
-      "Museum-quality frames with archival prints—each piece curated for calm, modern interiors.",
+    id: "keychains",
+    title: "Keychains",
+    tagline: "Carry your moments",
+    vibe: "trendy",
+    emoji: "🔑",
+    gradient: "from-violet-100/70 via-cream to-peach-100",
     image:
-      "https://images.unsplash.com/photo-1618220179428-22790b461013?w=1200&q=80&auto=format&fit=crop",
-    href: "#framed",
+      "https://images.unsplash.com/photo-1606107557195-0a7c8dc4bf1e?w=800&q=80&auto=format&fit=crop",
+    href: "#keychains",
   },
   {
-    id: "travel",
-    title: "Travel & Places",
-    subtitle: "Wander, then display",
-    description:
-      "Location-inspired decor that turns your journeys into daily reminders of where you've been.",
-    image:
-      "https://images.unsplash.com/photo-1616046229474-9901c5536a45?w=1200&q=80&auto=format&fit=crop",
-    href: "#travel",
-  },
-] as const;
-
-export const products: Product[] = [
-  {
-    id: "1",
-    name: "Coastal Morning Magnet Set",
-    category: "Magnets",
-    price: 48,
-    tag: "Bestseller",
-    image:
-      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=800&q=80&auto=format&fit=crop",
-    description: "Set of 4 acrylic photo magnets with soft matte edges.",
-  },
-  {
-    id: "2",
-    name: "Kyoto Garden Print",
-    category: "Framed Art",
-    price: 189,
-    tag: "Limited",
-    image:
-      "https://images.unsplash.com/photo-1618221197210-5fe3f9c2b0c0?w=800&q=80&auto=format&fit=crop",
-    description: "Archival giclée print in natural oak frame, 18×24 in.",
-  },
-  {
-    id: "3",
-    name: "Paris Map Keepsake",
-    category: "Travel",
-    price: 72,
-    image:
-      "https://images.unsplash.com/photo-1502672260266-1c1ef936a0e8?w=800&q=80&auto=format&fit=crop",
-    description: "Personalized city map on premium cotton paper.",
-  },
-  {
-    id: "4",
-    name: "Family Portrait Magnet",
-    category: "Personalized",
-    price: 34,
+    id: "frames",
+    title: "Photo Frames",
+    tagline: "Memories on display",
+    vibe: "emotional",
+    emoji: "🖼️",
+    gradient: "from-rose-100/80 via-warm-white to-beige",
     image:
       "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80&auto=format&fit=crop",
-    description: "Upload your photo—we craft, polish, and ship within 5 days.",
+    href: "#frames",
+  },
+  {
+    id: "canvas",
+    title: "Custom Canvas",
+    tagline: "Wall-worthy moments",
+    vibe: "premium",
+    emoji: "🎨",
+    gradient: "from-orange-100/60 via-cream to-pink-50",
+    image:
+      "https://images.unsplash.com/photo-1618221197210-5fe3f9c2b0c0?w=800&q=80&auto=format&fit=crop",
+    href: "#canvas",
   },
 ];
 
-export const testimonials = [
+export const trendingProducts: Product[] = [
   {
     id: "1",
-    quote:
-      "The magnets arrived in packaging so beautiful I almost didn't want to open it. They look like tiny art pieces on our fridge.",
-    author: "Elena M.",
-    location: "Portland, OR",
-    rating: 5,
+    name: "Mini Memory Sticker Pack",
+    category: "Stickers",
+    price: 12,
+    tag: "Viral",
+    color: "bg-pink-100",
+    image:
+      "https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=600&q=80&auto=format&fit=crop",
   },
   {
     id: "2",
-    quote:
-      "We ordered a framed print for our nursery. The quality rivals pieces we've seen in boutique hotels—soft tones, perfect framing.",
-    author: "James & Priya K.",
-    location: "Austin, TX",
-    rating: 5,
+    name: "Acrylic Photo Magnet",
+    category: "Magnets",
+    price: 18,
+    tag: "Bestseller",
+    color: "bg-amber-50",
+    image:
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=600&q=80&auto=format&fit=crop",
   },
   {
     id: "3",
-    quote:
-      "Gifted the travel map keepsake to my parents for their anniversary. They cried. Worth every penny.",
-    author: "Sofia R.",
-    location: "Brooklyn, NY",
-    rating: 5,
+    name: "Couple Keychain Duo",
+    category: "Keychains",
+    price: 24,
+    tag: "Gift fave",
+    color: "bg-violet-50",
+    image:
+      "https://images.unsplash.com/photo-1606107557195-0a7c8dc4bf1e?w=600&q=80&auto=format&fit=crop",
   },
-] as const;
+  {
+    id: "4",
+    name: "Soft Edge Photo Frame",
+    category: "Frames",
+    price: 32,
+    color: "bg-rose-50",
+    image:
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80&auto=format&fit=crop",
+  },
+];
+
+export const ugcPosts = [
+  {
+    id: "1",
+    user: "@maya.desk",
+    caption: "my fridge is literally a scrapbook now 🥹",
+    image:
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=600&q=80&auto=format&fit=crop",
+    likes: "12.4k",
+  },
+  {
+    id: "2",
+    user: "@couple.core",
+    caption: "matching keychains >>>",
+    image:
+      "https://images.unsplash.com/photo-1606107557195-0a7c8dc4bf1e?w=600&q=80&auto=format&fit=crop",
+    likes: "8.2k",
+  },
+  {
+    id: "3",
+    user: "@travel.journal",
+    caption: "every trip gets a sticker now ✈️",
+    image:
+      "https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=600&q=80&auto=format&fit=crop",
+    likes: "21k",
+  },
+  {
+    id: "4",
+    user: "@room.reset",
+    caption: "canvas above my desk hits different",
+    image:
+      "https://images.unsplash.com/photo-1618221197210-5fe3f9c2b0c0?w=600&q=80&auto=format&fit=crop",
+    likes: "5.6k",
+  },
+  {
+    id: "5",
+    user: "@gift.girl",
+    caption: "best friend bday = custom magnets",
+    image:
+      "https://images.unsplash.com/photo-1513885535758-46798b2630a6?w=600&q=80&auto=format&fit=crop",
+    likes: "9.1k",
+  },
+  {
+    id: "6",
+    user: "@study.aesthetic",
+    caption: "sticker bombing my laptop lol",
+    image:
+      "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=600&q=80&auto=format&fit=crop",
+    likes: "15k",
+  },
+];
 
 export const galleryImages = [
-  "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=600&q=80&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1618220179428-22790b461013?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1616046229474-9901c5536a45?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1502672260266-1c1ef936a0e8?w=600&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1606107557195-0a7c8dc4bf1e?w=600&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1513885535758-46798b2630a6?w=600&q=80&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=600&q=80&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1618221197210-5fe3f9c2b0c0?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=600&q=80&auto=format&fit=crop",
-] as const;
+  "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80&auto=format&fit=crop",
+];
 
-export const trustPoints = [
+export const emotionalReasons = [
   {
-    title: "Hand-finished",
+    title: "Memories that stick",
     description:
-      "Every magnet is polished by hand. Every frame is inspected twice before it leaves our studio.",
+      "Your camera roll is full of moments that deserve to live outside your phone.",
+    emoji: "📸",
   },
   {
-    title: "Archival quality",
+    title: "Gifts that feel personal",
     description:
-      "Fade-resistant inks and museum-grade materials—built to live with you for decades.",
+      "For besties, partners, and the person who has everything—except your inside jokes.",
+    emoji: "💌",
   },
   {
-    title: "Thoughtful packaging",
+    title: "Travel, captured cute",
     description:
-      "Unboxing should feel like receiving a gift. Recycled luxury materials, zero plastic fuss.",
+      "Turn trips into stickers, magnets, and desk treasures you'll actually use.",
+    emoji: "✈️",
   },
   {
-    title: "Made with care",
+    title: "Your aesthetic, your rules",
     description:
-      "Small-batch production means attention to detail big retailers simply cannot match.",
+      "Match your room, your journal, your vibe. Made uniquely for you.",
+    emoji: "✨",
   },
-] as const;
+];
+
+export const floatingHeroProducts = [
+  {
+    label: "Sticker",
+    image:
+      "https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=400&q=80&auto=format&fit=crop",
+    className: "top-[12%] left-[4%] w-24 sm:w-32 rotate-[-12deg]",
+    delay: 0,
+  },
+  {
+    label: "Magnet",
+    image:
+      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=400&q=80&auto=format&fit=crop",
+    className: "top-[8%] right-[6%] w-28 sm:w-36 rotate-[8deg]",
+    delay: 0.2,
+  },
+  {
+    label: "Keychain",
+    image:
+      "https://images.unsplash.com/photo-1606107557195-0a7c8dc4bf1e?w=400&q=80&auto=format&fit=crop",
+    className: "bottom-[28%] left-[2%] w-20 sm:w-28 rotate-[6deg]",
+    delay: 0.4,
+  },
+  {
+    label: "Frame",
+    image:
+      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=400&q=80&auto=format&fit=crop",
+    className: "bottom-[22%] right-[4%] w-24 sm:w-32 rotate-[-6deg]",
+    delay: 0.15,
+  },
+];
+
+export const stickerEmojis = ["✨", "💕", "⭐", "🌸", "📸", "🎀", "🫶", "💫"];

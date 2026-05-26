@@ -1,46 +1,37 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import { AppProviders } from "@/components/providers/app-providers";
+import { FloatingStickers } from "@/components/effects/floating-stickers";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
 export const metadata: Metadata = {
-  title: "WOW Arcade — Premium Home Decor & Keepsakes",
+  title: "WOW Arcade — Custom Stickers, Magnets & Keepsakes",
   description:
-    "Acrylic photo magnets, framed artwork, and personalized travel-inspired decor. Luxury minimalism for modern, cozy homes.",
-  keywords: [
-    "photo magnets",
-    "framed art",
-    "personalized gifts",
-    "home decor",
-    "luxury keepsakes",
-  ],
+    "Upload your memories. Turn them into custom stickers, acrylic magnets, keychains, frames & more. Gen-Z friendly, made uniquely for you.",
   openGraph: {
-    title: "WOW Arcade",
-    description: "Turn moments into heirlooms.",
+    title: "WOW Arcade — Turn Your Memories Into Art",
+    description: "Custom stickers, magnets, keychains & aesthetic keepsakes.",
     type: "website",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#faf8f5" },
-    { media: "(prefers-color-scheme: dark)", color: "#141312" },
-  ],
+  themeColor: "#fff9f5",
 };
 
 export default function RootLayout({
@@ -49,11 +40,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="scroll-smooth">
       <body
-        className={`${cormorant.variable} ${dmSans.variable} grain font-sans antialiased`}
+        className={`${plusJakarta.variable} ${fraunces.variable} mesh-bg min-h-screen font-sans text-ink antialiased`}
       >
-        <AppProviders>{children}</AppProviders>
+        <AppProviders>
+          <FloatingStickers />
+          {children}
+        </AppProviders>
       </body>
     </html>
   );

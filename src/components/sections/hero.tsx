@@ -5,186 +5,209 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import gsap from "gsap";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Upload } from "lucide-react";
+import { MagneticButton } from "@/components/ui/magnetic-button";
 import { Button } from "@/components/ui/button";
-import { Container } from "@/components/ui/container";
 import { Badge } from "@/components/ui/badge";
+import { Container } from "@/components/ui/container";
+import { floatingHeroProducts } from "@/lib/data";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { cn } from "@/lib/utils";
 
 export function HeroSection() {
   const reduced = usePrefersReducedMotion();
   const ref = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 80]);
 
   useEffect(() => {
-    if (reduced || !titleRef.current) return;
-    const chars = titleRef.current.querySelectorAll("[data-char]");
+    if (reduced || !headlineRef.current) return;
+    const words = headlineRef.current.querySelectorAll("[data-word]");
     gsap.fromTo(
-      chars,
-      { y: 80, opacity: 0, rotateX: -40 },
+      words,
+      { y: 50, opacity: 0, rotateZ: -3 },
       {
         y: 0,
         opacity: 1,
-        rotateX: 0,
-        stagger: 0.04,
-        duration: 1.1,
-        ease: "power3.out",
-        delay: 0.2,
+        rotateZ: 0,
+        stagger: 0.08,
+        duration: 0.9,
+        ease: "back.out(1.4)",
+        delay: 0.15,
       }
     );
   }, [reduced]);
 
-  const line1 = "Turn moments";
-  const line2 = "into heirlooms";
-
   return (
     <section
       ref={ref}
-      className="relative min-h-[100dvh] overflow-hidden pt-28 sm:pt-32"
+      className="relative min-h-[100dvh] overflow-hidden pt-24 pb-16 sm:pt-28"
       aria-label="Hero"
     >
-      <div className="pointer-events-none absolute -right-32 top-20 h-[480px] w-[480px] rounded-full bg-gold/10 blur-[100px]" />
-      <div className="pointer-events-none absolute -left-20 bottom-40 h-[360px] w-[360px] rounded-full bg-beige blur-[80px] dark:bg-brown/20" />
-
-      <Container className="relative z-10 grid min-h-[calc(100dvh-7rem)] gap-10 lg:grid-cols-12 lg:items-end lg:gap-8 lg:pb-16">
+      {/* Floating product cards */}
+      {floatingHeroProducts.map((p) => (
         <motion.div
-          style={reduced ? undefined : { y: contentY, opacity }}
-          className="flex flex-col justify-center lg:col-span-6 lg:pb-8"
+          key={p.label}
+          className={cn(
+            "absolute z-10 hidden overflow-hidden rounded-3xl border-4 border-warm-white sticker-shadow sm:block",
+            p.className
+          )}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: p.delay + 0.5, type: "spring", stiffness: 120 }}
+          style={{ animationDelay: `${p.delay}s` }}
         >
+          <div className="animate-float relative aspect-square h-full w-full">
+            <Image
+              src={p.image}
+              alt={p.label}
+              fill
+              sizes="150px"
+              className="object-cover"
+            />
+            <span className="absolute bottom-1 left-1 rounded-full bg-warm-white/90 px-2 py-0.5 text-[9px] font-bold text-ink">
+              {p.label}
+            </span>
+          </div>
+        </motion.div>
+      ))}
+
+      <Container className="relative z-20">
+        <motion.div style={reduced ? undefined : { y }} className="mx-auto max-w-3xl text-center">
           <motion.div
-            initial={reduced ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
+            initial={reduced ? false : { opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", stiffness: 200 }}
           >
-            <Badge className="mb-6 border-gold/25 bg-beige/30 text-charcoal dark:text-foreground">
-              <Sparkles className="mr-1.5 inline h-3 w-3 text-gold" />
-              New — Spring Collection
+            <Badge className="border-pink/50 bg-pink/30 text-ink">
+              <Sparkles className="mr-1 inline h-3 w-3" />
+              Upload → Customize → Obsess
             </Badge>
           </motion.div>
 
           <h1
-            ref={titleRef}
-            className="font-serif text-[clamp(2.75rem,10vw,5.5rem)] leading-[0.95] tracking-tight text-charcoal dark:text-foreground"
-            style={{ perspective: 800 }}
+            ref={headlineRef}
+            className="mt-6 font-display text-[clamp(2.5rem,9vw,4.5rem)] font-semibold leading-[1.05] tracking-tight text-ink"
           >
-            <span className="block overflow-hidden">
-              {line1.split("").map((c, i) => (
-                <span
-                  key={`l1-${i}`}
-                  data-char
-                  className="inline-block"
-                  style={{ display: c === " " ? "inline" : "inline-block" }}
-                >
-                  {c === " " ? "\u00A0" : c}
-                </span>
-              ))}
+            <span data-word className="inline-block">
+              Turn your
+            </span>{" "}
+            <span data-word className="inline-block text-pink-deep">
+              memories
             </span>
-            <span className="mt-1 block overflow-hidden italic text-brown dark:text-gold-soft">
-              {line2.split("").map((c, i) => (
-                <span key={`l2-${i}`} data-char className="inline-block">
-                  {c === " " ? "\u00A0" : c}
-                </span>
-              ))}
+            <br />
+            <span data-word className="inline-block">
+              into
+            </span>{" "}
+            <span
+              data-word
+              className="inline-block bg-gradient-to-r from-pink-deep via-peach to-lavender bg-clip-text text-transparent"
+            >
+              everyday art
             </span>
           </h1>
 
           <motion.p
-            className="mt-6 max-w-md text-base leading-relaxed text-muted sm:mt-8 sm:text-lg"
-            initial={reduced ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.55 }}
+            className="mx-auto mt-5 max-w-lg text-base leading-relaxed text-brown-soft sm:text-lg"
+            initial={reduced ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
           >
-            Acrylic photo magnets, framed artwork, and personalized keepsakes—
-            crafted for homes that feel curated, cozy, and unmistakably yours.
+            Custom stickers, magnets, keychains, frames &amp; more — made from
+            <span className="font-semibold text-ink"> your photos</span>.
+            Tiny memories that stay forever.
           </motion.p>
 
           <motion.div
-            className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:items-center sm:gap-4"
-            initial={reduced ? false : { opacity: 0, y: 20 }}
+            className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
+            initial={reduced ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.7 }}
+            transition={{ delay: 0.75 }}
           >
-            <Button variant="luxury" size="lg" asChild>
-              <Link href="#collections">
-                Shop the collection
+            <MagneticButton variant="pink" size="lg" asChild>
+              <Link href="#customize">
+                <Upload className="h-5 w-5" />
+                Upload your photos
                 <ArrowRight className="h-4 w-4" />
               </Link>
-            </Button>
+            </MagneticButton>
             <Button variant="outline" size="lg" asChild>
-              <Link href="#gifts">Create a gift</Link>
+              <Link href="#shop">Shop trending</Link>
             </Button>
           </motion.div>
 
-          <motion.dl
-            className="mt-12 grid grid-cols-3 gap-4 border-t border-border pt-8 sm:mt-16 sm:max-w-lg"
-            initial={reduced ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9, duration: 1 }}
-          >
-            {[
-              { label: "Happy homes", value: "12k+" },
-              { label: "Avg. rating", value: "4.9" },
-              { label: "Ship time", value: "3–5d" },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <dt className="text-[10px] uppercase tracking-[0.2em] text-muted">
-                  {stat.label}
-                </dt>
-                <dd className="mt-1 font-serif text-2xl text-charcoal dark:text-foreground">
-                  {stat.value}
-                </dd>
+          {/* Mobile hero product stack */}
+          <div className="relative mx-auto mt-12 max-w-sm sm:max-w-md lg:hidden">
+            <motion.div
+              className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border-4 border-warm-white sticker-shadow"
+              whileHover={reduced ? undefined : { scale: 1.02, rotate: 1 }}
+            >
+              <Image
+                src="https://images.unsplash.com/photo-1611532736597-de2d426f9b7b?w=800&q=80&auto=format&fit=crop"
+                alt="Custom stickers and magnets preview"
+                fill
+                priority
+                sizes="90vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-x-4 bottom-4 glass-panel rounded-2xl p-3 text-left">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-pink-deep">
+                  Live preview
+                </p>
+                <p className="text-sm font-semibold text-ink">
+                  Your photo → custom sticker pack
+                </p>
               </div>
-            ))}
-          </motion.dl>
-        </motion.div>
-
-        <motion.div
-          style={reduced ? undefined : { y: imageY }}
-          className="relative lg:col-span-6"
-        >
-          <div className="relative mx-auto aspect-[4/5] max-h-[72dvh] w-full max-w-lg overflow-hidden rounded-[2rem] shadow-[var(--shadow)] sm:rounded-[2.5rem] lg:max-w-none">
-            <Image
-              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1200&q=85&auto=format&fit=crop"
-              alt="Cozy modern interior with curated wall art and decor"
-              fill
-              priority
-              sizes="(max-width: 1024px) 90vw, 50vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-charcoal/25 via-transparent to-transparent" />
+            </motion.div>
+            <motion.div
+              className="absolute -right-2 top-8 rounded-2xl border-4 border-warm-white bg-pink/40 px-3 py-2 text-sm font-bold shadow-lg rotate-6"
+              animate={{ y: [0, -8, 0] }}
+              transition={{ repeat: Infinity, duration: 2.5 }}
+            >
+              ✨ so cute
+            </motion.div>
           </div>
+
+          {/* Desktop center mockup */}
           <motion.div
-            className="absolute -bottom-4 left-4 right-4 mx-auto max-w-[240px] rounded-2xl border border-border/60 bg-warm-white/90 p-4 shadow-[var(--shadow-soft)] backdrop-blur-md dark:bg-card/90 sm:-left-8 sm:bottom-8 sm:max-w-[260px] lg:-left-12"
-            initial={reduced ? false : { opacity: 0, y: 24, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ delay: 1, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="relative mx-auto mt-14 hidden max-w-lg lg:block"
+            initial={reduced ? false : { opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, type: "spring" }}
           >
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted">
-              Featured
-            </p>
-            <p className="mt-1 font-serif text-lg leading-snug">
-              Coastal Morning Magnet Set
-            </p>
-            <p className="mt-1 text-sm text-gold">From $48</p>
+            <div className="relative aspect-[5/4] overflow-hidden rounded-[2.5rem] border-[6px] border-warm-white sticker-shadow">
+              <Image
+                src="https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=1000&q=80&auto=format&fit=crop"
+                alt="Aesthetic desk with custom stickers and magnets"
+                fill
+                priority
+                sizes="512px"
+                className="object-cover"
+              />
+            </div>
+            <motion.div
+              className="absolute -left-8 top-1/4 rounded-3xl border-4 border-warm-white bg-lavender/80 p-3 sticker-shadow -rotate-6"
+              animate={{ y: [0, -10, 0] }}
+              transition={{ repeat: Infinity, duration: 3 }}
+            >
+              <span className="text-2xl">🧲</span>
+              <p className="text-xs font-bold text-ink">Magnet</p>
+            </motion.div>
+            <motion.div
+              className="absolute -right-6 bottom-1/4 rounded-3xl border-4 border-warm-white bg-peach/80 p-3 sticker-shadow rotate-6"
+              animate={{ y: [0, 10, 0] }}
+              transition={{ repeat: Infinity, duration: 3.5, delay: 0.5 }}
+            >
+              <span className="text-2xl">🔑</span>
+              <p className="text-xs font-bold text-ink">Keychain</p>
+            </motion.div>
           </motion.div>
         </motion.div>
       </Container>
-
-      <motion.div
-        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-muted lg:flex"
-        animate={reduced ? undefined : { y: [0, 8, 0] }}
-        transition={{ repeat: Infinity, duration: 2.4, ease: "easeInOut" }}
-      >
-        <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-        <span className="h-10 w-px bg-gradient-to-b from-gold/60 to-transparent" />
-      </motion.div>
     </section>
   );
 }
