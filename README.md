@@ -1,59 +1,31 @@
-# WOW Arcade
+# WOW Arcade ✨
 
-Premium luxury e-commerce experience for **WOW Arcade** — acrylic photo magnets, framed artwork, travel-inspired decor, and personalized keepsakes.
+**Upload your memories → turn them into custom products.**
+
+Gen-Z friendly premium customization brand — stickers, acrylic magnets, keychains, frames, canvas & cute keepsakes.
 
 ## Stack
 
-- **Next.js 16** (App Router)
-- **TypeScript** + **Tailwind CSS v4**
-- **Framer Motion** + **GSAP** (hero typography)
-- **Lenis** smooth scrolling
-- **next-themes** (light / dark)
-- **shadcn-style** UI primitives (`Button`, `Badge`, Radix Slot)
-- **Lucide** icons
-- **next/image** with Unsplash CDN
+Next.js 16 · TypeScript · Tailwind v4 · Framer Motion · GSAP (hero) · Lenis · shadcn-style UI
 
-## Run locally
+## Run
 
 ```bash
-cd wow-arcade
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+## Deploy on Forge
 
-> **Note:** If `npm install` fails with `ENOSPC`, your system drive may be full. Point npm cache to another drive:
->
-> ```powershell
-> npm config set cache "F:\npm-cache"
-> $env:TEMP="F:\temp"
-> ```
+See [DEPLOY-FORGE.md](./DEPLOY-FORGE.md).
 
-## Build
+## Sections
 
-```bash
-npm run build
-npm start
-```
-
-## Deploy on Laravel Forge
-
-See **[DEPLOY-FORGE.md](./DEPLOY-FORGE.md)** for Nginx template, daemon (`npm run start`), zero-downtime deploy script, and SSL/DNS steps.
-
-## Structure
-
-| Path | Purpose |
-|------|---------|
-| `src/components/sections/` | Cinematic page sections (hero → gallery) |
-| `src/components/layout/` | Header, footer |
-| `src/components/ui/` | Design system primitives |
-| `src/lib/data.ts` | Demo products, collections, testimonials |
-
-## Design
-
-- **Fonts:** Cormorant Garamond (headings) + DM Sans (body)
-- **Palette:** warm cream, beige, charcoal, muted gold
-- **Motion:** Lenis scroll, Framer reveals, reduced-motion respected
-
-Replace Unsplash URLs in `src/lib/data.ts` with your product photography for production.
+- Cinematic hero with floating products + cursor stickers
+- Interactive customizer (upload + live mockups)
+- Unique product categories (bento + mobile swipe)
+- Trending products carousel
+- TikTok/reels social proof + photo wall
+- Emotional “why custom” grid
+- Viral Instagram masonry gallery
+- Checkout CTA + mobile sticky upload bar
